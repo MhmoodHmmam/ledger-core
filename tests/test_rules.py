@@ -123,6 +123,15 @@ class Reversals(unittest.TestCase):
         self.assertFalse(ledger.submit(reverse("R2", "NOPE")).applied)
         self.assertEqual(ledger.entries(), ())
 
+    def test_reversal_value_dated_before_the_original_is_rejected(self):
+        ledger = new_ledger()
+        ledger.close_day()
+        ledger.submit(debit("D1", "50.00", day=2, value_date=2))
+        record = ledger.submit(reverse("R1", "D1", day=2, value_date=1))
+        self.assertFalse(record.applied)
+        self.assertEqual(ledger.closing_balance(AED, 1), D("0.00"))
+        self.assertEqual(ledger.ledger_balance(AED), D("-50.00"))
+
     def test_reversal_of_instalment_credit_reverses_every_part(self):
         ledger = new_ledger()
         ledger.submit(credit("C1", "10.000", account=BHD, currency="BHD", instalments=3))

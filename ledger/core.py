@@ -378,6 +378,11 @@ class Ledger:
                       for r in self._event_log)
         if already:
             return self._record(event, False, f"rejected: {event.reverses} has already been reversed")
+        if event.value_date < target.event.value_date:
+            # would credit back money for days on which the original had not yet counted
+            return self._record(event, False,
+                                f"rejected: reversal value date Day {event.value_date} is before "
+                                f"{event.reverses}'s value date Day {target.event.value_date}")
         original_entries = [e for e in self._entries if e.source_event_id == event.reverses]
         for original in original_entries:
             self._post(event.account_id, EntryType.REVERSAL, -original.amount, event.value_date, event.event_id)

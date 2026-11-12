@@ -82,7 +82,7 @@ The authorization ID *is* in the ledger, so criterion 4's test ("ID not present"
 "Auth-B is never settled inside the window." Auth-B is declined here, so it holds nothing. An *approved* authorization that never settles would hold funds forever: there is no expiry rule. Expiry is out of scope and covered in the architecture document.
 
 ### B12. Reversal semantics
-**Chosen:** a reversal posts an equal and opposite entry for each entry of the original event (all instalments, if any) with the reversal's own value date. It never deletes or edits the original. Only CREDIT and DEBIT events can be reversed (not fees, settlements or other reversals), and only once. E9's value date (Day 2) equals E7's, so the reversal neutralises E7 for every day from Day 2.
+**Chosen:** a reversal posts an equal and opposite entry for each entry of the original event (all instalments, if any) with the reversal's own value date. It never deletes or edits the original. Only CREDIT and DEBIT events can be reversed (not fees, settlements or other reversals), and only once. Its value date may not be earlier than the original's (`test_reversal_value_dated_before_the_original_is_rejected`). E9's value date (Day 2) equals E7's, so the reversal neutralises E7 for every day from Day 2.
 
 ### B13. Overdraft fee on a BHD account
 The fee is defined in AED only. **Chosen:** no FX conversion. A negative BHD account produces an error line in the day close and no fee. It does not occur in this stream. *Test:* `test_negative_bhd_account_reported_not_charged`.

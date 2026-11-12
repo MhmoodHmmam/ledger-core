@@ -20,7 +20,7 @@ python replay.py
 python -m unittest -v
 ```
 
-**Expected test result: 52 tests, 1 failure.** The failure is deliberate:
+**Expected test result: 53 tests, 1 failure.** The failure is deliberate:
 `tests/test_known_failure.py::test_fees_caused_only_by_a_reversed_debit_are_refunded`.
 It is annotated inline and explained in REJECTED.md, criterion 6. To run only the suite that should be green:
 
